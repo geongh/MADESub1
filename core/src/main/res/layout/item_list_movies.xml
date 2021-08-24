@@ -16,7 +16,7 @@
             android:id="@+id/iv_item_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/white"
+            android:background="@color/black"
             android:contentDescription="@string/image"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="H,1.5:1"
