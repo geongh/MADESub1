@@ -3,9 +3,6 @@
     <string name="home">Home</string>
     <string name="image">Image</string>
     <string name="favorite">Favorite</string>
-    <string name="title">Title</string>
-    <string name="year">Release Date</string>
     <string name="storyline">Storyline</string>
-    <string name="title_favorite">Favorite</string>
     <string name="title_df">df</string>
 </resources>

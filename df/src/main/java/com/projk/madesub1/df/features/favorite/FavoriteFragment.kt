@@ -37,25 +37,24 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val moviesAdapter = MoviesAdapter()
-            moviesAdapter.onItemClick = { selectedData ->
-                val intent = Intent(activity, DetailMoviesActivity::class.java)
-                intent.putExtra(DetailMoviesActivity.EXTRA_DATA, selectedData)
-                startActivity(intent)
-            }
-
             favoriteViewModel.favoriteMovies.observe(viewLifecycleOwner, { favoriteMovies ->
+                val moviesAdapter = MoviesAdapter(favoriteMovies)
+                moviesAdapter.onItemClick = { selectedData ->
+                    val intent = Intent(activity, DetailMoviesActivity::class.java)
+                    intent.putExtra(DetailMoviesActivity.EXTRA_DATA, selectedData)
+                    startActivity(intent)
+                }
                 moviesAdapter.setData(favoriteMovies)
                 if (favoriteMovies.isEmpty()) {
                     Toast.makeText(context, "No Movies Added", Toast.LENGTH_SHORT).show()
                 }
-            })
 
-            with(binding.rvMovies) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = moviesAdapter
-            }
+                with(binding.rvMovies) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = moviesAdapter
+                }
+            })
         }
     }
 

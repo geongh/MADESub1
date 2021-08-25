@@ -32,14 +32,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val moviesAdapter = MoviesAdapter()
-            moviesAdapter.onItemClick = { selectedData ->
-                val intent = Intent(activity, DetailMoviesActivity::class.java)
-                intent.putExtra(DetailMoviesActivity.EXTRA_DATA, selectedData)
-                startActivity(intent)
-            }
-
             homeViewModel.movies.observe(viewLifecycleOwner, { movies ->
+                val moviesAdapter = movies.data?.let { MoviesAdapter(it) }
+                moviesAdapter?.onItemClick = { selectedData ->
+                    val intent = Intent(activity, DetailMoviesActivity::class.java)
+                    intent.putExtra(DetailMoviesActivity.EXTRA_DATA, selectedData)
+                    startActivity(intent)
+                }
+
                 if (movies != null) {
                     when (movies) {
                         is Resource.Loading -> {
@@ -47,20 +47,20 @@ class HomeFragment : Fragment() {
                         }
                         is Resource.Success -> {
                             binding.progressBar.visibility = View.GONE
-                            moviesAdapter.setData(movies.data)
+                            moviesAdapter?.setData(movies.data)
                         }
                         is Resource.Error -> {
                             binding.progressBar.visibility = View.GONE
                         }
                     }
+
+                    with(binding.rvMovies) {
+                        layoutManager = LinearLayoutManager(context)
+                        setHasFixedSize(true)
+                        adapter = moviesAdapter
+                    }
                 }
             })
-
-            with(binding.rvMovies) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = moviesAdapter
-            }
         }
     }
 
